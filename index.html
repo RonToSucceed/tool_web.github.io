@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="免費、快速、在瀏覽器本機運作的進位轉換與 RGB 選色工具。">
+  <meta name="theme-color" content="#f6f4ef">
+  <title>小工具集｜進位轉換與 RGB 選色器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="小工具集首頁">
+        <span class="brand-mark" aria-hidden="true">⌁</span>
+        <span>小工具集</span>
+      </a>
+      <p>簡單、快速，資料不離開你的瀏覽器。</p>
+    </header>
+
+    <main>
+      <nav class="tool-tabs" aria-label="工具選單" role="tablist">
+        <button class="tool-tab is-active" id="tab-base" role="tab" aria-selected="true" aria-controls="panel-base" data-tool="base">
+          <span class="tab-icon">01</span><span>進位轉換</span>
+        </button>
+        <button class="tool-tab" id="tab-color" role="tab" aria-selected="false" aria-controls="panel-color" data-tool="color" tabindex="-1">
+          <span class="tab-icon color-dot"></span><span>RGB 選色器</span>
+        </button>
+        <button class="tool-tab" id="tab-rotation" role="tab" aria-selected="false" aria-controls="panel-rotation" data-tool="rotation" tabindex="-1">
+          <span class="tab-icon rotation-icon">↻</span><span>3D 旋轉轉換</span>
+        </button>
+      </nav>
+
+      <section class="tool-panel is-active" id="panel-base" role="tabpanel" aria-labelledby="tab-base">
+        <div class="panel-heading">
+          <div><p class="eyebrow">BASE CONVERTER</p><h1>進位轉換</h1></div>
+          <p>在任一欄位輸入整數，其他欄位會即時同步。</p>
+        </div>
+        <div class="converter-grid" id="base-converter"></div>
+        <div class="tip"><span>提示</span> 可輸入負數；英文字母不分大小寫。輸入值前不需要加 0x 或 0b。</div>
+      </section>
+
+      <section class="tool-panel" id="panel-color" role="tabpanel" aria-labelledby="tab-color" hidden>
+        <div class="panel-heading">
+          <div><p class="eyebrow">COLOR CONVERTER</p><h1>RGB 選色器</h1></div>
+          <p>選擇顏色，立即取得網頁、設計與程式開發常用的色彩數值。</p>
+        </div>
+
+        <div class="color-workspace">
+          <div class="color-visual">
+            <div class="color-preview" id="color-preview">
+              <input type="color" id="native-picker" value="#4F6DF5" aria-label="開啟系統選色盤">
+              <span class="picker-hint">點擊色塊選色</span>
+            </div>
+            <div class="contrast-preview" id="contrast-preview">
+              <span class="contrast-light">Text</span><span class="contrast-dark">Text</span>
+            </div>
+          </div>
+
+          <div class="color-values">
+            <div class="value-group">
+              <div class="group-heading"><h2>RGB 十進位</h2><span>0 — 255</span></div>
+              <div class="channel-grid" id="rgb-integers"></div>
+            </div>
+            <div class="value-group">
+              <div class="group-heading"><h2>RGB 小數</h2><span>0.0 — 1.0</span></div>
+              <div class="channel-grid" id="rgb-normalized"></div>
+            </div>
+            <div class="value-group hex-group">
+              <div class="group-heading"><h2>HEX 十六進位</h2><span>#RRGGBB</span></div>
+              <div class="copy-field">
+                <span>#</span><input id="hex-value" value="4F6DF5" maxlength="6" spellcheck="false" aria-label="HEX 色碼">
+                <button class="copy-button" type="button" data-copy="hex-value" aria-label="複製 HEX 色碼">複製</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-panel" id="panel-rotation" role="tabpanel" aria-labelledby="tab-rotation" hidden>
+        <div class="panel-heading">
+          <div><p class="eyebrow">3D ROTATION CONVERTER</p><h1>3D 旋轉轉換</h1></div>
+          <p>從任一表示法輸入旋轉，轉換成 Quaternion、旋轉矩陣、Euler angles 與 Axis–Angle。</p>
+        </div>
+
+        <div class="rotation-note">
+          <span>轉換慣例</span>
+          右手座標系・主動旋轉・角度單位為 degree・Euler 採 Z–Y–X（Yaw → Pitch → Roll）
+        </div>
+
+        <div class="rotation-grid">
+          <section class="rotation-card">
+            <div class="rotation-card-heading"><div><h2>Quaternion</h2><p>純量優先（WXYZ）</p></div><span>4 VALUES</span></div>
+            <div class="rotation-fields four-columns" id="quaternion-fields">
+              <label>W<input id="quat-w" type="number" step="any" value="1"></label>
+              <label>X<input id="quat-x" type="number" step="any" value="0"></label>
+              <label>Y<input id="quat-y" type="number" step="any" value="0"></label>
+              <label>Z<input id="quat-z" type="number" step="any" value="0"></label>
+            </div>
+            <button class="convert-button" type="button" data-rotation-source="quaternion">以 Quaternion 轉換</button>
+          </section>
+
+          <section class="rotation-card matrix-card">
+            <div class="rotation-card-heading"><div><h2>Rotation Matrix</h2><p>3 × 3 正交矩陣</p></div><span>ROW MAJOR</span></div>
+            <div class="matrix-wrap"><span class="matrix-bracket left"></span><div class="matrix-fields" id="matrix-fields"></div><span class="matrix-bracket right"></span></div>
+            <button class="convert-button" type="button" data-rotation-source="matrix">以 Matrix 轉換</button>
+          </section>
+
+          <section class="rotation-card">
+            <div class="rotation-card-heading"><div><h2>Euler Angles</h2><p>Roll / Pitch / Yaw</p></div><span>DEGREE</span></div>
+            <div class="rotation-fields three-columns">
+              <label>Roll · X<input id="euler-roll" type="number" step="any" value="0"></label>
+              <label>Pitch · Y<input id="euler-pitch" type="number" step="any" value="0"></label>
+              <label>Yaw · Z<input id="euler-yaw" type="number" step="any" value="0"></label>
+            </div>
+            <button class="convert-button" type="button" data-rotation-source="euler">以 Euler angles 轉換</button>
+          </section>
+
+          <section class="rotation-card">
+            <div class="rotation-card-heading"><div><h2>Axis–Angle</h2><p>單位軸與旋轉角度</p></div><span>AXIS + DEGREE</span></div>
+            <div class="rotation-fields four-columns">
+              <label>Axis X<input id="axis-x" type="number" step="any" value="1"></label>
+              <label>Axis Y<input id="axis-y" type="number" step="any" value="0"></label>
+              <label>Axis Z<input id="axis-z" type="number" step="any" value="0"></label>
+              <label>Angle<input id="axis-angle" type="number" step="any" value="0"></label>
+            </div>
+            <button class="convert-button" type="button" data-rotation-source="axis-angle">以 Axis–Angle 轉換</button>
+          </section>
+        </div>
+        <div class="rotation-status" id="rotation-status" role="status" aria-live="polite">目前為單位旋轉（Identity rotation）</div>
+
+        <details class="rotation-formulas" open>
+          <summary>
+            <span><strong>座標轉換數學式</strong><small>與此工具使用相同的旋轉慣例</small></span>
+            <span class="summary-action">展開／收合</span>
+          </summary>
+          <div class="formula-content">
+            <div class="formula-convention">
+              以下皆採右手座標系與主動旋轉。欄向量座標點 <i>p</i> 經旋轉後為 <span class="math-inline">p′ = Rp</span>；矩陣採 row-major 顯示。
+            </div>
+
+            <section class="formula-block formula-wide">
+              <div class="formula-title"><span>01</span><div><h3>旋轉矩陣作用於座標點</h3><p>將原始座標乘上 3×3 rotation matrix</p></div></div>
+              <div class="equation matrix-equation">
+                <span class="column-vector">⌈ x′ ⌉<br>│ y′ │<br>⌊ z′ ⌋</span>
+                <span>=</span>
+                <span class="matrix-vector">⌈ r₀₀　r₀₁　r₀₂ ⌉<br>│ r₁₀　r₁₁　r₁₂ │<br>⌊ r₂₀　r₂₁　r₂₂ ⌋</span>
+                <span class="column-vector">⌈ x ⌉<br>│ y │<br>⌊ z ⌋</span>
+              </div>
+              <div class="equation equation-sub">x′ = r₀₀x + r₀₁y + r₀₂z　　y′ = r₁₀x + r₁₁y + r₁₂z　　z′ = r₂₀x + r₂₁y + r₂₂z</div>
+            </section>
+
+            <section class="formula-block">
+              <div class="formula-title"><span>02</span><div><h3>Quaternion → Matrix</h3><p>q = (w, x, y, z)，且 ‖q‖ = 1</p></div></div>
+              <div class="equation equation-multiline">
+                R = ⌈ 1−2(y²+z²)　 2(xy−wz)　 2(xz+wy) ⌉<br>
+                <span class="indent">│ 2(xy+wz)　 1−2(x²+z²)　 2(yz−wx) │</span><br>
+                <span class="indent">⌊ 2(xz−wy)　 2(yz+wx)　 1−2(x²+y²) ⌋</span>
+              </div>
+              <div class="formula-foot">座標也可直接寫為純 Quaternion：<span class="math-inline">p′ = q p q⁻¹</span></div>
+            </section>
+
+            <section class="formula-block">
+              <div class="formula-title"><span>03</span><div><h3>Euler → Quaternion</h3><p>ZYX：Yaw(ψ) → Pitch(θ) → Roll(φ)</p></div></div>
+              <div class="equation equation-multiline compact">
+                w = cφcθcψ + sφsθsψ<br>
+                x = sφcθcψ − cφsθsψ<br>
+                y = cφsθcψ + sφcθsψ<br>
+                z = cφcθsψ − sφsθcψ
+              </div>
+              <div class="formula-foot">其中 <span class="math-inline">cφ = cos(φ/2)</span>、<span class="math-inline">sφ = sin(φ/2)</span>，θ、ψ 亦同。</div>
+            </section>
+
+            <section class="formula-block">
+              <div class="formula-title"><span>04</span><div><h3>Quaternion → Euler</h3><p>輸出 Roll(φ)、Pitch(θ)、Yaw(ψ)</p></div></div>
+              <div class="equation equation-multiline compact">
+                φ = atan2(2(wx+yz), 1−2(x²+y²))<br>
+                θ = asin(clamp(2(wy−zx), −1, 1))<br>
+                ψ = atan2(2(wz+xy), 1−2(y²+z²))
+              </div>
+              <div class="formula-foot">當 Pitch = ±90° 時會發生 gimbal lock，多組 Euler angles 可能代表同一旋轉。</div>
+            </section>
+
+            <section class="formula-block">
+              <div class="formula-title"><span>05</span><div><h3>Axis–Angle ↔ Quaternion</h3><p>單位旋轉軸 û = (uₓ, uᵧ, u_z)，旋轉角 α</p></div></div>
+              <div class="equation equation-multiline compact">
+                q = (cos(α/2), uₓsin(α/2), uᵧsin(α/2), u_zsin(α/2))<br><br>
+                α = 2 acos(w)<br>
+                û = (x, y, z) / √(1−w²)
+              </div>
+              <div class="formula-foot">輸入軸不必預先正規化；工具會先計算 <span class="math-inline">û = u / ‖u‖</span>。</div>
+            </section>
+          </div>
+        </details>
+      </section>
+
+      <aside class="ad-placeholder" aria-label="廣告預留位置"><span>ADVERTISEMENT</span><p>廣告版位預留區</p></aside>
+    </main>
+
+    <footer><span>小工具集</span><span>所有轉換皆在本機完成</span></footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite">已複製</div>
+</body>
+</html>
