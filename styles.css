@@ -148,9 +148,6 @@ main { padding-bottom: 44px; }
 .formula-foot { margin-top: 11px; color: var(--muted); font-size: .65rem; line-height: 1.75; }
 .math-inline { color: var(--ink); font-family: var(--mono); }
 
-.ad-placeholder { display: grid; place-items: center; min-height: 112px; margin-top: 22px; color: #a4a59f; border: 1px dashed #cfd0ca; border-radius: 16px; text-align: center; }
-.ad-placeholder span { align-self: end; font: .58rem var(--mono); letter-spacing: .18em; }
-.ad-placeholder p { align-self: start; margin: 5px 0 0; font-size: .72rem; }
 footer { display: flex; justify-content: space-between; padding: 0 4px 32px; color: var(--muted); font-size: .72rem; }
 .toast { position: fixed; left: 50%; bottom: 28px; z-index: 10; padding: 10px 18px; color: white; background: #20231f; border-radius: 99px; opacity: 0; transform: translate(-50%, 15px); pointer-events: none; transition: .25s; font-size: .8rem; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
